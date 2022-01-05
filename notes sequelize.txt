@@ -1,0 +1,8 @@
+HasOne insère la clé d'association dans le modèle cible.
+
+BelongsTo insère la clé d'association dans le modèle source .
+
+User.belongsTo(Company, {foreignKey: 'fk_company'});
+
+Project.belongsToMany(User, {through: 'UserProject'});
+User.belongsToMany(Project, {through: 'UserProject'});
