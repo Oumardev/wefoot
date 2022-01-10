@@ -18,6 +18,28 @@ async function buildFriend(req, res, next){
     next()
 }
 
+async function destroy(req, res, next){
+    var { recipientId } = req.body
+    var senderId = req.user.id
+
+    if( senderId == recipientId ) return res.status(401).json({'message' : 'Une erreur s\'est produite'})
+    if( !senderId || !recipientId ) return res.status(401).json({'message' : 'Une erreur s\'est produite'}) 
+
+    try {
+        await sequelize.query(
+            `
+                DELETE FROM notifications WHERE senderId=:senderId AND recipientId=:recipientId
+            `,{ replacements: { 'senderId': senderId, 'recipientId' : recipientId }
+        });
+    }catch(error){
+        console.log(error)
+        return res.status(401).json({'message' : 'Une erreur s\'est produite'})
+    }
+    
+    return res.status(200).json({'message' : "La notification pour être amis a été crée"})
+    next()
+}
+
 async function buildInvite(req, res, next){
     var { recipiendId , matchId } = req.body
     var senderId = req.user.id
@@ -71,4 +93,4 @@ async function showInviteNotification(req, res, next){
     next()
 }
 
-module.exports={ buildFriend, buildInvite, showFriendNotification, showInviteNotification }
+module.exports={ buildFriend, buildInvite, showFriendNotification, showInviteNotification, destroy }

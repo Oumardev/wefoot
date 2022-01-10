@@ -34,7 +34,7 @@ const Login = ({navigation}) => {
    
     let data = {login: login, password: password};
     
-    fetch('http://192.168.1.2:19002/login', {
+    fetch('http://192.168.1.5:19002/login', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -50,7 +50,7 @@ const Login = ({navigation}) => {
 
           if (responseJson.token) {
             
-            fetch('http://192.168.1.2:19002/verifyToken', {
+            fetch('http://192.168.1.5:19002/verifyToken', {
               method: 'POST',
               headers: {
                   'Accept': 'application/json',

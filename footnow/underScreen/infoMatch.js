@@ -22,7 +22,7 @@ export default function infoMatch({route, navigation}) {
     
     let data = { "id" : id } 
 
-    fetch('http://192.168.1.2:19002/getmatch', {
+    fetch('http://192.168.1.5:19002/getmatch', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -38,7 +38,7 @@ export default function infoMatch({route, navigation}) {
          
           let data = { "matchId" : responseJson.data[0].id } 
         
-          fetch('http://192.168.1.2:19002/getnumberofparticipant', {
+          fetch('http://192.168.1.5:19002/getnumberofparticipant', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -61,7 +61,7 @@ export default function infoMatch({route, navigation}) {
       
     let data = { "matchId" : id } 
         
-    fetch('http://192.168.1.2:19002/quitmatch', {
+    fetch('http://192.168.1.5:19002/quitmatch', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {

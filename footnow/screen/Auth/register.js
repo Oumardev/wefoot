@@ -81,7 +81,7 @@ const Register = ({navigation}) => {
       password: password
     };
 
-    fetch('http://192.168.1.2:19002/register', {
+    fetch('http://192.168.1.5:19002/register', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {

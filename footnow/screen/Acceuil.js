@@ -52,7 +52,7 @@ export default function Acceuil({navigation}) {
 
     let data = {date: ofZe};
 
-    fetch('http://192.168.1.2:19002/listmatch', {
+    fetch('http://192.168.1.5:19002/listmatch', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -75,7 +75,7 @@ export default function Acceuil({navigation}) {
 
     let data = {date: ofZe};
 
-    fetch('http://192.168.1.2:19002/listmatch', {
+    fetch('http://192.168.1.5:19002/listmatch', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {

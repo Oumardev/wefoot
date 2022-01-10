@@ -13,7 +13,7 @@ export default function MesMatchs({navigation}) {
       setToken(value.token)
     })
 
-    fetch('http://192.168.1.2:19002/getallmymatch', {
+    fetch('http://192.168.1.5:19002/getallmymatch', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

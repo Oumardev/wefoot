@@ -8,7 +8,7 @@ const { register, login, verifyToken, GerantLogin, GerantRegister } = require('.
 const { Creatematch, Joinmatch, Quitmatch, Listmatch, Getmatch, GetAllMyMatch, getNumberOfParticipant } = require('./middleware/matchRoute')
 const { CreateReservation, SaveReservation, DeleteReservation } = require('./middleware/reservationRoute')
 const { Accept, Remove, List, Search } = require('./middleware/friends')
-const { buildFriend, buildInvite, showFriendNotification, showInviteNotification} = require('./middleware/notification')
+const { buildFriend, buildInvite, showFriendNotification, showInviteNotification, destroy} = require('./middleware/notification')
 
 /**--------------------------------------------------------------------------------------------------------- */
 app.post('/registerGerant',GerantRegister, (req, res)=>{
@@ -90,6 +90,10 @@ app.post('/search', verifyToken, async (req, res)=>{
     Search(req, res)
 })
 
+app.post('/destroy', verifyToken, async (req, res)=>{
+    destroy(req, res)
+})
+
 app.post('/buildfriend', verifyToken, async (req, res)=>{
     buildFriend(req, res)
 })
@@ -112,10 +116,10 @@ app.post('/verifyToken', verifyToken, async (req, res)=>{
     return res.status(200).json({ user : req.user , token : req.token})
 })
 
-app.listen(19002,'192.168.1.2',async ()=>{
+app.listen(19002,'192.168.1.5',async ()=>{
     try {
         await sequelize.authenticate()
-        console.log('server listen on http://192.168.1.2:19002 ... ')
+        console.log('server listen on http://192.168.1.5:19002 ... ')
     } catch (error) {
         console.log('error to connected server to database')
     }

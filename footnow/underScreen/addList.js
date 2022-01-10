@@ -9,14 +9,64 @@ export default function AddList({navigation, search}) {
 
     const [bool , setBool] = useState(true)
 
-    const handleAdd =(key) =>{
-        if(friend[key].invited == false){
-            friend[key].invited = true
-        }else{
-          friend[key].invited = false
-        }
+    const sendFriend =(recipientId) =>{
+      const data = {recipientId: recipientId}
+     
+      fetch('http://192.168.1.5:19002/buildfriend', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+      })
+      .then((response) => response.json())
+        .then((responseJson) => {
+          if(responseJson.data){
+            console.log(responseJson)
+          }
+        })
+    }
 
-        setBool(!bool)
+    const cancelFriend =(recipientId) =>{
+      const data = {recipientId: recipientId}
+     
+      fetch('http://192.168.1.5:19002/destroy', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+      })
+      .then((response) => response.json())
+        .then((responseJson) => {
+          if(responseJson.data){
+            console.log(responseJson)
+          }
+        })
+    }
+
+    const AcceptFriend =(TargetId) =>{
+      const data = {TargetId: TargetId}
+     
+      fetch('http://192.168.1.5:19002/accept', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+      })
+      .then((response) => response.json())
+        .then((responseJson) => {
+          if(responseJson){
+            console.log(responseJson)
+          }
+        })
     }
 
     useEffect(() => {
@@ -27,7 +77,7 @@ export default function AddList({navigation, search}) {
 
       const data = {search: search}
       console.log(data)
-      fetch('http://192.168.1.2:19002/search', {
+      fetch('http://192.168.1.5:19002/search', {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
@@ -46,7 +96,41 @@ export default function AddList({navigation, search}) {
   
     },[token, search])
 
-    console.log('frk : ',friend)
+    const showButton = (item)=>{
+      if(item.me){
+        return(
+         <TouchableOpacity disabled={true} style={{padding:4}}>
+           <Text style={{fontSize: '18', color: 'black', fontWeight:'800'}}>Moi</Text>
+         </TouchableOpacity>
+        )
+      }else if(item.isfriend){
+       return(
+        <TouchableOpacity disabled={true} style={{backgroundColor:'#F5F0F0', padding:4}}>
+          <Text style={{fontSize: '16', color: 'green', fontWeight:'700'}}>Amis</Text>
+        </TouchableOpacity>
+       )
+      }else{
+        if(item.invited){
+          return(
+           <TouchableOpacity onPress={()=> cancelFriend(item.id)} style={{backgroundColor:'tomato', padding:4}}>
+             <Text style={{fontSize: '15', color: 'white', fontWeight:'700'}}>Supprimer</Text>
+           </TouchableOpacity>
+          )
+         }else if (item.accepted) {
+          return(
+            <TouchableOpacity onPress={()=> AcceptFriend(item.id)} style={{backgroundColor:'#ECF87F', padding:4}}>
+              <Text style={{fontSize: '15', color: 'white', fontWeight:'700'}}>Accepter</Text>
+            </TouchableOpacity>
+           )
+        }else{
+          return(
+            <TouchableOpacity onPress={()=> sendFriend(item.id)} style={{backgroundColor:'#F5F0F0', padding:4}}>
+              <Text style={{fontSize: '15', color: '#3A3B3C', fontWeight:'700'}}>Ajouter</Text>
+            </TouchableOpacity>
+           )
+         }
+      }
+    }
 
     if(friend.length!=0){
       friend.map(item =>{
@@ -69,15 +153,10 @@ export default function AddList({navigation, search}) {
                               height:47
                           }}
                       />
-                      <Text style={styles.nom} onPress={ ()=> navigation.navigate('friendProfil') }>{item.prenom} {item.nom}</Text>
+                      <Text style={{...styles.nom, color : item.me ? '#FF7F50' : 'black' }} onPress={ ()=> navigation.navigate('friendProfil') }>{item.prenom} {item.nom}</Text>
                     </View>
                     {
-                      (friend[key].invited && !friend[key].isfriend && !friend[key].me)?
-                      (
-                        <TouchableOpacity onPress={()=> handleAdd(key)} style={ (friend[key].invited && !friend[key].isfriend && !friend[key].me) && styles.buttonGray }>
-                                <Text style={{fontSize: '18', color: 'white', fontWeight:'600'}}>Annuler</Text>
-                        </TouchableOpacity>
-                      ):null
+                      showButton(item)
                     }
                   </View>
                 ))

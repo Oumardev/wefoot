@@ -47,7 +47,7 @@ export default function MakeMatch({navigation}) {
       "prix": selectedValuePrice
    } 
 
-    fetch('http://192.168.1.2:19002/creatematch', {
+    fetch('http://192.168.1.5:19002/creatematch', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {

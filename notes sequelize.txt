@@ -4,5 +4,5 @@ BelongsTo insère la clé d'association dans le modèle source .
 
 User.belongsTo(Company, {foreignKey: 'fk_company'});
 
-Project.belongsToMany(User, {through: 'UserProject'});
+Project.belongsToMany(User,b {through: 'UserProject'});
 User.belongsToMany(Project, {through: 'UserProject'});
